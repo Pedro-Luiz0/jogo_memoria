@@ -14,6 +14,7 @@
     --text: #f8fafc;
     --muted: #94a3b8;
     --success: #22c55e;
+    --danger: #ef4444;
 }
 
 body {
@@ -22,19 +23,30 @@ body {
     color: var(--text);
 
     background:
-        radial-gradient(circle at top left, #312e81 0, transparent 35%),
-        radial-gradient(circle at bottom right, #164e63 0, transparent 35%),
+        radial-gradient(
+            circle at top left,
+            #312e81 0,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #164e63 0,
+            transparent 35%
+        ),
         var(--background);
 
     padding: 30px 15px;
 }
 
 .game-container {
-    width: min(100%, 1000px);
+    width: min(100%, 1100px);
     margin: 0 auto;
 }
 
-/* HEADER */
+
+/* =========================
+   HEADER
+========================= */
 
 .game-header {
     display: flex;
@@ -70,13 +82,16 @@ body {
     transform: translateY(-2px);
 }
 
-/* NÍVEIS */
+
+/* =========================
+   NÍVEIS
+========================= */
 
 .levels {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .level-btn {
@@ -107,7 +122,115 @@ body {
     border-color: var(--primary);
 }
 
-/* ESTATÍSTICAS */
+.level-btn.expert.active {
+    background: linear-gradient(
+        135deg,
+        #dc2626,
+        #7c3aed
+    );
+}
+
+
+/* =========================
+   MODOS
+========================= */
+
+.game-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.mode-btn {
+    border: 1px solid #334155;
+    background: rgba(30, 41, 59, 0.8);
+    color: var(--text);
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.mode-btn:hover {
+    background: var(--card-hover);
+}
+
+.mode-btn.active {
+    background: var(--secondary);
+    border-color: var(--secondary);
+}
+
+
+/* =========================
+   TURNO
+========================= */
+
+.turn-indicator {
+    text-align: center;
+    background: rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.5);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.turn-indicator span {
+    color: var(--muted);
+    margin-right: 5px;
+}
+
+.turn-indicator strong {
+    color: white;
+}
+
+
+/* =========================
+   PLACAR DOS PLAYERS
+========================= */
+
+.players-score {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.player-card {
+    background: rgba(30, 41, 59, 0.85);
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.player-card span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.player-card strong {
+    display: block;
+    font-size: 24px;
+}
+
+.player-card small {
+    color: var(--muted);
+}
+
+.player-card.active-player {
+    border-color: var(--secondary);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+}
+
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
 
 .stats {
     display: grid;
@@ -135,7 +258,10 @@ body {
     font-size: 20px;
 }
 
-/* TABULEIRO */
+
+/* =========================
+   TABULEIRO
+========================= */
 
 .game-board {
     display: grid;
@@ -168,11 +294,15 @@ body {
 .card-back {
     position: absolute;
     inset: 0;
+
     border-radius: 14px;
+
     backface-visibility: hidden;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
 
@@ -189,7 +319,8 @@ body {
 .card-back {
     background: #f8fafc;
     transform: rotateY(180deg);
-    font-size: clamp(1.8rem, 5vw, 3rem);
+
+    font-size: clamp(1.5rem, 5vw, 3rem);
 }
 
 .card:hover .card-front {
@@ -206,23 +337,34 @@ body {
     cursor: default;
 }
 
-/* PRO */
 
-.game-board.pro {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 9px;
+/* =========================
+   EXPERT
+========================= */
+
+.game-board.expert {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
 }
 
-.game-board.pro .card-front,
-.game-board.pro .card-back {
-    border-radius: 10px;
+.game-board.expert .card-front,
+.game-board.expert .card-back {
+    border-radius: 8px;
 }
 
-/* MODAL */
+.game-board.expert .card-back {
+    font-size: clamp(1rem, 3vw, 2rem);
+}
+
+
+/* =========================
+   MODAL
+========================= */
 
 .modal {
     position: fixed;
     inset: 0;
+
     background: rgba(2, 6, 23, 0.8);
     backdrop-filter: blur(6px);
 
@@ -240,17 +382,22 @@ body {
 
 .modal-content {
     width: min(100%, 430px);
+
     background: #1e293b;
     border: 1px solid #475569;
+
     border-radius: 20px;
     padding: 35px;
+
     text-align: center;
+
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 
     animation: modalIn 0.3s ease;
 }
 
 @keyframes modalIn {
+
     from {
         opacity: 0;
         transform: scale(0.8);
@@ -260,6 +407,7 @@ body {
         opacity: 1;
         transform: scale(1);
     }
+
 }
 
 .trophy {
@@ -281,7 +429,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .final-stats div {
@@ -301,16 +449,31 @@ body {
     font-size: 18px;
 }
 
+.winner-box {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid var(--success);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
 .play-again {
     width: 100%;
+
     border: none;
     background: var(--success);
     color: white;
+
     padding: 14px;
+
     border-radius: 10px;
+
     cursor: pointer;
+
     font-size: 16px;
     font-weight: bold;
+
     transition: 0.2s;
 }
 
@@ -319,7 +482,32 @@ body {
     transform: translateY(-2px);
 }
 
-/* RESPONSIVO */
+
+/* =========================
+   UTILITÁRIOS
+========================= */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 800px) {
+
+    .levels {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .game-board.expert {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 5px;
+    }
+
+}
 
 @media (max-width: 650px) {
 
@@ -349,25 +537,47 @@ body {
         gap: 8px;
     }
 
-    .game-board.pro {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 7px;
+    .game-board.expert {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
     }
 
     .card-front,
     .card-back {
-        border-radius: 9px;
+        border-radius: 8px;
     }
 
     .modal-content {
         padding: 25px 20px;
     }
+
+}
+
+@media (max-width: 450px) {
+
+    .game-board.expert {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 3px;
+    }
+
+    .game-board.expert .card-front {
+        font-size: 15px;
+    }
+
+    .game-board.expert .card-back {
+        font-size: 18px;
+    }
+
 }
 
 @media (max-width: 380px) {
 
     .game-board {
         gap: 6px;
+    }
+
+    .game-board.expert {
+        gap: 2px;
     }
 
     .stat {
@@ -377,4 +587,5 @@ body {
     .stat strong {
         font-size: 17px;
     }
+
 }

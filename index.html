@@ -4,105 +4,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Memória</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <main class="game-container">
+<main class="game-container">
 
-        <header class="game-header">
-            <div>
-                <h1>🧠 Jogo da Memória</h1>
-                <p>Encontre todos os pares!</p>
-            </div>
-
-            <button id="restartBtn" class="restart-btn">
-                ↻ Reiniciar
-            </button>
-        </header>
-
-        <section class="levels">
-            <button class="level-btn active" data-level="facil">
-                Fácil
-                <span>4 pares</span>
-            </button>
-
-            <button class="level-btn" data-level="medio">
-                Médio
-                <span>6 pares</span>
-            </button>
-
-            <button class="level-btn" data-level="dificil">
-                Difícil
-                <span>8 pares</span>
-            </button>
-
-            <button class="level-btn" data-level="pro">
-                Pro
-                <span>12 pares</span>
-            </button>
-        </section>
-
-        <section class="stats">
-            <div class="stat">
-                <span class="stat-label">Movimentos</span>
-                <strong id="moves">0</strong>
-            </div>
-
-            <div class="stat">
-                <span class="stat-label">Tempo</span>
-                <strong id="timer">00:00</strong>
-            </div>
-
-            <div class="stat">
-                <span class="stat-label">Pares</span>
-                <strong>
-                    <span id="pairs">0</span>/<span id="totalPairs">4</span>
-                </strong>
-            </div>
-
-            <div class="stat">
-                <span class="stat-label">Pontos</span>
-                <strong id="score">0</strong>
-            </div>
-        </section>
-
-        <section id="gameBoard" class="game-board"></section>
-
-    </main>
-
-    <div id="winModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="trophy">🏆</div>
-
-            <h2>Parabéns!</h2>
-
-            <p>Você encontrou todos os pares!</p>
-
-            <div class="final-stats">
-                <div>
-                    <span>Tempo</span>
-                    <strong id="finalTime">00:00</strong>
-                </div>
-
-                <div>
-                    <span>Movimentos</span>
-                    <strong id="finalMoves">0</strong>
-                </div>
-
-                <div>
-                    <span>Pontos</span>
-                    <strong id="finalScore">0</strong>
-                </div>
-            </div>
-
-            <button id="playAgainBtn" class="play-again">
-                Jogar novamente
-            </button>
+    <header class="game-header">
+        <div>
+            <h1>🧠 Jogo da Memória</h1>
+            <p>Encontre os pares relacionados!</p>
         </div>
+
+        <button id="restartBtn" class="restart-btn">
+            ↻ Reiniciar
+        </button>
+    </header>
+
+    <!-- NÍVEIS -->
+    <section class="levels">
+
+        <button class="level-btn active" data-level="facil">
+            Fácil
+            <span>4 pares</span>
+        </button>
+
+        <button class="level-btn" data-level="medio">
+            Médio
+            <span>6 pares</span>
+        </button>
+
+        <button class="level-btn" data-level="dificil">
+            Difícil
+            <span>8 pares</span>
+        </button>
+
+        <button class="level-btn" data-level="pro">
+            Pro
+            <span>12 pares</span>
+        </button>
+
+        <button class="level-btn expert" data-level="expert">
+            Expert
+            <span>32 pares</span>
+        </button>
+
+    </section>
+
+    <!-- MODO DE JOGO -->
+    <section class="game-modes">
+
+        <button class="mode-btn active" data-mode="solo">
+            👤 1 Player
+        </button>
+
+        <button class="mode-btn" data-mode="duo">
+            👥 2 Players
+        </button>
+
+    </section>
+
+    <!-- TURNO -->
+    <section id="turnIndicator" class="turn-indicator hidden">
+        <span>Vez do</span>
+        <strong id="currentPlayer">Jogador 1</strong>
+    </section>
+
+    <!-- PLACAR DOS PLAYERS -->
+    <section id="playersScore" class="players-score hidden">
+
+        <div class="player-card player-one active-player">
+            <span>🔵 Jogador 1</span>
+            <strong id="player1Score">0</strong>
+            <small id="player1Pairs">0 pares</small>
+        </div>
+
+        <div class="player-card player-two">
+            <span>🔴 Jogador 2</span>
+            <strong id="player2Score">0</strong>
+            <small id="player2Pairs">0 pares</small>
+        </div>
+
+    </section>
+
+    <!-- ESTATÍSTICAS -->
+    <section class="stats">
+
+        <div class="stat">
+            <span class="stat-label">Movimentos</span>
+            <strong id="moves">0</strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Tempo</span>
+            <strong id="timer">00:00</strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Pares</span>
+            <strong>
+                <span id="pairs">0</span>/<span id="totalPairs">4</span>
+            </strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Pontos</span>
+            <strong id="score">0</strong>
+        </div>
+
+    </section>
+
+    <!-- TABULEIRO -->
+    <section id="gameBoard" class="game-board"></section>
+
+</main>
+
+
+<!-- MODAL DE VITÓRIA -->
+<div id="winModal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <div class="trophy">🏆</div>
+
+        <h2 id="modalTitle">Parabéns!</h2>
+
+        <p id="modalMessage">
+            Você encontrou todos os pares!
+        </p>
+
+        <div class="final-stats">
+
+            <div>
+                <span>Tempo</span>
+                <strong id="finalTime">00:00</strong>
+            </div>
+
+            <div>
+                <span>Movimentos</span>
+                <strong id="finalMoves">0</strong>
+            </div>
+
+            <div>
+                <span>Pontos</span>
+                <strong id="finalScore">0</strong>
+            </div>
+
+        </div>
+
+        <div id="winnerBox" class="winner-box hidden">
+            🏆 <span id="winnerText"></span>
+        </div>
+
+        <button id="playAgainBtn" class="play-again">
+            Jogar novamente
+        </button>
+
     </div>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
