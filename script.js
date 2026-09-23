@@ -28,12 +28,6 @@ const levels = {
         name: "Pro",
         pairs: 12
     },
-
-    expert: {
-        name: "Expert",
-        pairs: 32
-    }
-
 };
 
 
@@ -55,28 +49,36 @@ const relatedPairs = [
     ["🐱", "🐭"],        // gato / rato
     ["🐝", "🌼"],        // abelha / flor
     ["🐟", "🌊"],        // peixe / mar
-    ["🦁", "👑"],        // leão / rei
-    ["🐵", "🍌"],        // macaco / banana
-    ["🐮", "🥛"],        // vaca / leite
-    ["🐔", "🥚"],        // galinha / ovo
-    ["🚗", "⛽"],        // carro / combustível
-    ["🚲", "🚴"],        // bicicleta / ciclista
-    ["✈️", "🧳"],        // avião / viagem
-    ["🚀", "🌌"],        // foguete / espaço
-    ["🚢", "⚓"],        // navio / âncora
-    ["🏠", "🔑"],        // casa / chave
-    ["📱", "📶"],        // celular / sinal
-    ["💻", "⌨️"],        // computador / teclado
-    ["🎮", "🕹️"],        // videogame / controle
-    ["🎵", "🎧"],        // música / fone
-    ["⚽", "🥅"],        // futebol / gol
-    ["🏀", "🏆"],        // basquete / troféu
-    ["📚", "✏️"],        // livro / lápis
-    ["🎨", "🖌️"],        // pintura / pincel
-    ["🔒", "🔑"],        // cadeado / chave
-    ["💡", "🔌"]         // lâmpada / tomada
-
 ];
+
+
+const emojiToImage = {
+    "🌧️": "images/rain.jpg",
+    "☂️": "images/umbrella.webp",
+    "☀️": "images/sun.webp",
+    "🕶️": "images/sunglasses.jpg",
+    "🌙": "images/moon.webp",
+    "⭐": "images/estrela.jpg",
+    "🔥": "images/fire.jpg",
+    "💧": "images/water.jpg",
+    "🍎": "images/red-apple.jpg",
+    "🍏": "images/green-apple.jpg",
+    "🍕": "images/pizza.jpg",
+    "🧀": "images/cheese.jpg",
+    "🍔": "images/burger.jpg",
+    "🍟": "images/fries.jpg",
+    "🌭": "images/hot-dog.jpg",
+    "🥤": "images/soda.jpg",
+    "🐶": "images/dog.jpg",
+    "🦴": "images/bone.jpg",
+    "🐱": "images/cat.jpg",
+    "🐭": "images/mouse.jpg",
+    "🐝": "images/bee.jpg",
+    "🌼": "images/flower.jpg",
+    "🐟": "images/fish.jpg",
+    "🌊": "images/sea.jpg",
+};
+
 
 
 // ==========================================
@@ -182,13 +184,6 @@ function startGame(level = currentLevel) {
         gameBoard.classList.add("pro");
     }
 
-
-    // Layout Expert
-    if (level === "expert") {
-        gameBoard.classList.add("expert");
-    }
-
-
     // Pega somente os pares necessários
     const selectedPairs = relatedPairs.slice(
         0,
@@ -279,39 +274,23 @@ function resetGameState() {
 // ==========================================
 
 function createCard(emoji, pairId, index) {
-
     const card = document.createElement("button");
-
     card.classList.add("card");
-
     card.dataset.emoji = emoji;
     card.dataset.pairId = pairId;
     card.dataset.index = index;
 
-
+    const frontImage = emojiToImage[emoji] || ""; // Obtém a URL da imagem correspondente ao emoji
     card.innerHTML = `
-
         <div class="card-inner">
-
-            <div class="card-front">
-                ?
-            </div>
-
+            <div class="card-front"></div>
             <div class="card-back">
-                ${emoji}
+                <img src="${frontImage}" alt="Card Image" class="card-image">
             </div>
-
         </div>
-
     `;
 
-
-    card.addEventListener(
-        "click",
-        () => flipCard(card)
-    );
-
-
+    card.addEventListener("click", () => flipCard(card));
     gameBoard.appendChild(card);
 }
 

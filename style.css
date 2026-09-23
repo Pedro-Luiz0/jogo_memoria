@@ -5,9 +5,9 @@
 }
 
 :root {
-    --primary: #7c3aed;
-    --primary-dark: #5b21b6;
-    --secondary: #06b6d4;
+    --primary: #121213;
+    --primary-dark: #605c66;
+    --secondary: #5e5e5e;
     --background: #0f172a;
     --card: #1e293b;
     --card-hover: #334155;
@@ -19,18 +19,18 @@
 
 body {
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Poppins;
     color: var(--text);
 
     background:
         radial-gradient(
             circle at top left,
-            #312e81 0,
+            #dfc906 0,
             transparent 35%
         ),
         radial-gradient(
             circle at bottom right,
-            #164e63 0,
+            #0d7a12 0,
             transparent 35%
         ),
         var(--background);
@@ -40,6 +40,7 @@ body {
 
 .game-container {
     width: min(100%, 1100px);
+    font-family: Poppins;
     margin: 0 auto;
 }
 
@@ -89,7 +90,7 @@ body {
 
 .levels {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Ajusta automaticamente o número de colunas */
     gap: 10px;
     margin-bottom: 15px;
 }
@@ -295,7 +296,7 @@ body {
     position: absolute;
     inset: 0;
 
-    border-radius: 14px;
+    border-radius: 50%;
 
     backface-visibility: hidden;
 
@@ -304,6 +305,14 @@ body {
     align-items: center;
 
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+
+.card-back img {
+    width: 100%; /* Faz a imagem ocupar toda a largura do card */
+    height: 100%; /* Faz a imagem ocupar toda a altura do card */
+    object-fit: cover; /* Garante que a imagem seja cortada proporcionalmente para caber no card */
+    border-radius: 50%; /* Mantém o formato arredondado do card */
 }
 
 .card-front {
@@ -335,25 +344,6 @@ body {
 
 .card.disabled {
     cursor: default;
-}
-
-
-/* =========================
-   EXPERT
-========================= */
-
-.game-board.expert {
-    grid-template-columns: repeat(8, 1fr);
-    gap: 8px;
-}
-
-.game-board.expert .card-front,
-.game-board.expert .card-back {
-    border-radius: 8px;
-}
-
-.game-board.expert .card-back {
-    font-size: clamp(1rem, 3vw, 2rem);
 }
 
 
@@ -502,11 +492,6 @@ body {
         grid-template-columns: repeat(3, 1fr);
     }
 
-    .game-board.expert {
-        grid-template-columns: repeat(8, 1fr);
-        gap: 5px;
-    }
-
 }
 
 @media (max-width: 650px) {
@@ -537,11 +522,6 @@ body {
         gap: 8px;
     }
 
-    .game-board.expert {
-        grid-template-columns: repeat(8, 1fr);
-        gap: 4px;
-    }
-
     .card-front,
     .card-back {
         border-radius: 8px;
@@ -553,31 +533,12 @@ body {
 
 }
 
-@media (max-width: 450px) {
 
-    .game-board.expert {
-        grid-template-columns: repeat(8, 1fr);
-        gap: 3px;
-    }
-
-    .game-board.expert .card-front {
-        font-size: 15px;
-    }
-
-    .game-board.expert .card-back {
-        font-size: 18px;
-    }
-
-}
 
 @media (max-width: 380px) {
 
     .game-board {
         gap: 6px;
-    }
-
-    .game-board.expert {
-        gap: 2px;
     }
 
     .stat {
