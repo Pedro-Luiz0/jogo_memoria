@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body class="page-game">
+
+<main class="game-container">
+
+    <header class="game-header">
+        <div>
+            <h1>Jogo da Memória</h1>
+            <p id="gameInfo"></p>
+        </div>
+
+        <div class="header-actions">
+            <a href="index.html" class="restart-btn menu-btn">← Menu</a>
+            <button id="restartBtn" class="restart-btn">↻ Reiniciar</button>
+        </div>
+
+    </header>
+
+    <!-- TURNO -->
+    <section id="turnIndicator" class="turn-indicator hidden">
+        <span>Vez do</span>
+        <strong id="currentPlayer">Jogador 1</strong>
+    </section>
+
+    <!-- PLACAR DOS PLAYERS -->
+    <section id="playersScore" class="players-score hidden">
+
+        <div class="player-card player-one active-player">
+            <span>🔵 Jogador 1</span>
+            <strong id="player1Score">0</strong>
+            <small id="player1Pairs">0 pares</small>
+        </div>
+
+        <div class="player-card player-two">
+            <span>🔴 Jogador 2</span>
+            <strong id="player2Score">0</strong>
+            <small id="player2Pairs">0 pares</small>
+        </div>
+
+    </section>
+
+    <!-- ESTATÍSTICAS -->
+    <section class="stats">
+
+        <div class="stat">
+            <span class="stat-label">Movimentos</span>
+            <strong id="moves">0</strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Tempo</span>
+            <strong id="timer">00:00</strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Pares</span>
+            <strong>
+                <span id="pairs">0</span>/<span id="totalPairs">4</span>
+            </strong>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">Pontos</span>
+            <strong id="score">0</strong>
+        </div>
+
+    </section>
+
+    <!-- TABULEIRO -->
+    <section id="gameBoard" class="game-board"></section>
+
+</main>
+
+
+<!-- MODAL DE VITÓRIA -->
+<div id="winModal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <div class="trophy">🏆</div>
+
+        <h2 id="modalTitle">Parabéns!</h2>
+
+        <p id="modalMessage">
+            Você encontrou todos os pares!
+        </p>
+
+        <div class="final-stats">
+
+            <div>
+                <span>Tempo</span>
+                <strong id="finalTime">00:00</strong>
+            </div>
+
+            <div>
+                <span>Movimentos</span>
+                <strong id="finalMoves">0</strong>
+            </div>
+
+            <div>
+                <span>Pontos</span>
+                <strong id="finalScore">0</strong>
+            </div>
+
+        </div>
+
+        <div id="winnerBox" class="winner-box hidden">
+            🏆 <span id="winnerText"></span>
+        </div>
+
+        <button id="playAgainBtn" class="play-again">
+            Jogar novamente
+        </button>
+
+        <a href="index.html" class="menu-link">Escolher outro nível</a>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

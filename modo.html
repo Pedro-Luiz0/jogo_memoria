@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-menu">
+
+<main class="menu">
+
+    <header>
+        <h1>Quantos jogadores?</h1>
+        <p class="menu-level">Nível <span id="nivelNome"></span></p>
+    </header>
+
+    <nav class="menu-options" aria-label="Número de jogadores">
+        <a class="menu-option" data-modo="solo" href="#">👤 1 Jogador</a>
+        <a class="menu-option" data-modo="duo" href="#">👥 2 Jogadores</a>
+    </nav>
+
+    <a class="menu-back" href="index.html">← Trocar dificuldade</a>
+
+</main>
+
+<script>
+    const niveis = { facil: "Fácil", medio: "Médio", dificil: "Difícil", pro: "Pro" };
+    const nivel = new URLSearchParams(window.location.search).get("nivel");
+
+    if (!niveis[nivel]) {
+        window.location.replace("index.html");
+    } else {
+        document.getElementById("nivelNome").textContent = niveis[nivel];
+        document.querySelectorAll("[data-modo]").forEach(link => {
+            link.href = `jogo.html?nivel=${nivel}&modo=${link.dataset.modo}`;
+        });
+    }
+</script>
+
+</body>
+</html>

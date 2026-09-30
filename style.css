@@ -550,3 +550,217 @@ body {
     }
 
 }
+
+/* =========================
+   TELAS DE MENU (níveis / jogadores)
+========================= */
+
+body.page-menu {
+    padding: 0;
+}
+
+.menu {
+    min-height: 100dvh;
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: 24px 16px;
+    display: grid;
+    place-content: center;
+    gap: 28px;
+    text-align: center;
+}
+
+.menu h1 {
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1.1;
+}
+
+.menu header p {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.menu-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.menu-option {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 24px 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.menu-option span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 6px;
+}
+
+.menu-option:hover {
+    background: var(--card-hover);
+    border-color: var(--muted);
+    transform: translateY(-2px);
+}
+
+.menu-option:focus-visible,
+.menu-back:focus-visible,
+.menu-link:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+}
+
+.menu-level {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.18);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.menu-back,
+.menu-link {
+    display: block;
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.menu-back:hover,
+.menu-link:hover {
+    color: var(--text);
+}
+
+.menu-link {
+    margin-top: 14px;
+}
+
+@media (max-width: 380px) {
+    .menu-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================
+   TELA DO JOGO: tudo cabe na tela, sem rolagem
+========================= */
+
+body.page-game {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding: 12px;
+}
+
+.page-game .game-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-game .game-header {
+    flex-direction: row;
+    text-align: left;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.page-game .game-header h1 {
+    font-size: clamp(1.3rem, 3.2vw, 1.9rem);
+    margin-bottom: 0;
+}
+
+.page-game .game-header p {
+    font-size: 13px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.page-game .restart-btn {
+    width: auto;
+    padding: 9px 14px;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.restart-btn.menu-btn {
+    background: transparent;
+    border: 1px solid #475569;
+}
+
+.page-game .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.page-game .stat {
+    padding: 6px 8px;
+}
+
+.page-game .stat-label {
+    font-size: 11px;
+    margin-bottom: 0;
+}
+
+.page-game .stat strong {
+    font-size: 17px;
+}
+
+.page-game .turn-indicator {
+    padding: 6px;
+    margin-bottom: 8px;
+}
+
+.page-game .players-score {
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.page-game .player-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    padding: 6px;
+}
+
+.page-game .player-card span {
+    margin: 0;
+}
+
+.page-game .player-card strong {
+    font-size: 18px;
+}
+
+/* O tabuleiro ocupa o espaço que sobrar; o JS (fitBoard) define o tamanho das cartas */
+.page-game .game-board {
+    flex: 1 1 0;
+    min-height: 0;
+    padding: 6px;
+    justify-content: center;
+    align-content: center;
+}
+
+.page-game .card {
+    width: var(--card-size, 80px);
+    height: var(--card-size, 80px);
+}

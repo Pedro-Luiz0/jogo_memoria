@@ -108,8 +108,6 @@ const modalMessage = document.getElementById("modalMessage");
 const winnerBox = document.getElementById("winnerBox");
 const winnerText = document.getElementById("winnerText");
 
-const levelButtons = document.querySelectorAll(".level-btn");
-const modeButtons = document.querySelectorAll(".mode-btn");
 
 const turnIndicator = document.getElementById("turnIndicator");
 const currentPlayerElement = document.getElementById("currentPlayer");
@@ -127,9 +125,12 @@ const player2PairsElement = document.getElementById("player2Pairs");
 // ESTADO
 // ==========================================
 
-let currentLevel = "facil";
+// Escolhas vindas das telas de menu (?nivel=dificil&modo=duo)
+const params = new URLSearchParams(window.location.search);
 
-let gameMode = "solo";
+let currentLevel = params.get("nivel");
+
+let gameMode = params.get("modo");
 
 let firstCard = null;
 let secondCard = null;
@@ -228,6 +229,7 @@ function startGame(level = currentLevel) {
     updateStats();
     updatePlayersScore();
     updateTurn();
+    fitBoard();
 }
 
 
@@ -788,94 +790,6 @@ function shuffle(array) {
 
 
 // ==========================================
-// BOTÕES DE NÍVEL
-// ==========================================
-
-levelButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            const level =
-                button.dataset.level;
-
-
-            levelButtons.forEach(btn => {
-
-                btn.classList.remove("active");
-
-            });
-
-
-            button.classList.add("active");
-
-
-            winModal.classList.add("hidden");
-
-
-            startGame(level);
-
-        }
-    );
-
-});
-
-
-// ==========================================
-// BOTÕES DE MODO
-// ==========================================
-
-modeButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            const mode =
-                button.dataset.mode;
-
-
-            modeButtons.forEach(btn => {
-
-                btn.classList.remove("active");
-
-            });
-
-
-            button.classList.add("active");
-
-
-            gameMode = mode;
-
-
-            if (mode === "duo") {
-
-                playersScore.classList.remove("hidden");
-
-                turnIndicator.classList.remove("hidden");
-
-            } else {
-
-                playersScore.classList.add("hidden");
-
-                turnIndicator.classList.add("hidden");
-
-            }
-
-
-            winModal.classList.add("hidden");
-
-
-            startGame(currentLevel);
-
-        }
-    );
-
-});
-
-
-// ==========================================
 // REINICIAR
 // ==========================================
 
@@ -908,7 +822,67 @@ playAgainBtn.addEventListener(
 
 
 // ==========================================
+// AJUSTAR TABULEIRO À TELA (sem rolagem)
+// ==========================================
+
+function fitBoard() {
+
+    const total = gameBoard.children.length;
+
+    if (!total) return;
+
+    const style = getComputedStyle(gameBoard);
+    const gap = parseFloat(style.columnGap) || 0;
+    const pad = parseFloat(style.paddingLeft) || 0;
+
+    const width = gameBoard.clientWidth - pad * 2;
+    const height = gameBoard.clientHeight - pad * 2;
+
+    // Testa cada número de colunas e fica com a que deixa as cartas maiores
+    let best = { size: 0, cols: 1 };
+
+    for (let cols = 1; cols <= total; cols++) {
+
+        const rows = Math.ceil(total / cols);
+
+        const size = Math.min(
+            (width - gap * (cols - 1)) / cols,
+            (height - gap * (rows - 1)) / rows
+        );
+
+        if (size > best.size) best = { size, cols };
+    }
+
+    const size = Math.max(Math.floor(Math.min(best.size, 150)), 0);
+
+    gameBoard.style.setProperty("--card-size", size + "px");
+    gameBoard.style.gridTemplateColumns = `repeat(${best.cols}, ${size}px)`;
+}
+
+// Recalcula ao girar/redimensionar a tela
+new ResizeObserver(fitBoard).observe(gameBoard);
+
+
+// ==========================================
 // INICIALIZAÇÃO
 // ==========================================
 
-startGame("facil");
+if (!levels[currentLevel]) {
+
+    // Sem nível válido: volta para a tela inicial
+    window.location.replace("index.html");
+
+} else if (gameMode !== "solo" && gameMode !== "duo") {
+
+    // Sem modo válido: volta para a escolha de jogadores
+    window.location.replace("modo.html?nivel=" + currentLevel);
+
+} else {
+
+    document.getElementById("gameInfo").textContent =
+        `${levels[currentLevel].name} · ${gameMode === "duo" ? "2 jogadores" : "1 jogador"}`;
+
+    playersScore.classList.toggle("hidden", gameMode !== "duo");
+
+    startGame(currentLevel);
+}
