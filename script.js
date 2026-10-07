@@ -4,81 +4,46 @@
 
 
 // ==========================================
-// NÍVEIS
+// DADOS DO JOGO VINDOS DO JSON
 // ==========================================
 
-const levels = {
-
-    facil: {
-        name: "Fácil",
-        pairs: 4
-    },
-
-    medio: {
-        name: "Médio",
-        pairs: 6
-    },
-
-    dificil: {
-        name: "Difícil",
-        pairs: 8
-    },
-
-    pro: {
-        name: "Pro",
-        pairs: 12
-    },
-};
+let levels = {};
+let relatedPairs = [];
+let emojiToImage = {};
 
 
 // ==========================================
-// PARES RELACIONADOS
+// CARREGAR JSON
 // ==========================================
 
-const relatedPairs = [
+async function loadGameData() {
 
-    ["🌧️", "☂️"],       // chuva / guarda-chuva
-    ["☀️", "🕶️"],       // sol / óculos
-    ["🌙", "⭐"],        // lua / estrela
-    ["🔥", "💧"],        // fogo / água
-    ["🍎", "🍏"],        // maçãs
-    ["🍕", "🧀"],        // pizza / queijo
-    ["🍔", "🍟"],        // hambúrguer / batata
-    ["🌭", "🥤"],        // cachorro-quente / refrigerante
-    ["🐶", "🦴"],        // cachorro / osso
-    ["🐱", "🐭"],        // gato / rato
-    ["🐝", "🌼"],        // abelha / flor
-    ["🐟", "🌊"],        // peixe / mar
-];
+    try {
 
+        const response = await fetch("dados.json");
 
-const emojiToImage = {
-    "🌧️": "images/rain.jpg",
-    "☂️": "images/umbrella.webp",
-    "☀️": "images/sun.webp",
-    "🕶️": "images/sunglasses.jpg",
-    "🌙": "images/moon.webp",
-    "⭐": "images/estrela.jpg",
-    "🔥": "images/fire.jpg",
-    "💧": "images/water.jpg",
-    "🍎": "images/red-apple.jpg",
-    "🍏": "images/green-apple.jpg",
-    "🍕": "images/pizza.jpg",
-    "🧀": "images/cheese.jpg",
-    "🍔": "images/burger.jpg",
-    "🍟": "images/fries.jpg",
-    "🌭": "images/hot-dog.jpg",
-    "🥤": "images/soda.jpg",
-    "🐶": "images/dog.jpg",
-    "🦴": "images/bone.jpg",
-    "🐱": "images/cat.jpg",
-    "🐭": "images/mouse.jpg",
-    "🐝": "images/bee.jpg",
-    "🌼": "images/flower.jpg",
-    "🐟": "images/fish.jpg",
-    "🌊": "images/sea.jpg",
-};
+        if (!response.ok) {
+            throw new Error("Não foi possível carregar o arquivo dados.json");
+        }
 
+        const data = await response.json();
+
+        levels = data.levels;
+        relatedPairs = data.relatedPairs;
+        emojiToImage = data.emojiToImage;
+
+        console.log("Dados carregados do JSON:", data);
+
+    } catch (error) {
+
+        console.error("Erro ao carregar dados.json:", error);
+
+        alert(
+            "Erro ao carregar os dados do jogo. " +
+            "Verifique se o arquivo dados.json existe."
+        );
+    }
+}
 
 
 // ==========================================
@@ -92,7 +57,6 @@ const timerElement = document.getElementById("timer");
 const pairsElement = document.getElementById("pairs");
 const totalPairsElement = document.getElementById("totalPairs");
 const scoreElement = document.getElementById("score");
-
 const restartBtn = document.getElementById("restartBtn");
 const playAgainBtn = document.getElementById("playAgainBtn");
 
@@ -104,10 +68,8 @@ const finalScore = document.getElementById("finalScore");
 
 const modalTitle = document.getElementById("modalTitle");
 const modalMessage = document.getElementById("modalMessage");
-
 const winnerBox = document.getElementById("winnerBox");
 const winnerText = document.getElementById("winnerText");
-
 
 const turnIndicator = document.getElementById("turnIndicator");
 const currentPlayerElement = document.getElementById("currentPlayer");
@@ -116,10 +78,8 @@ const playersScore = document.getElementById("playersScore");
 
 const player1ScoreElement = document.getElementById("player1Score");
 const player2ScoreElement = document.getElementById("player2Score");
-
 const player1PairsElement = document.getElementById("player1Pairs");
 const player2PairsElement = document.getElementById("player2Pairs");
-
 
 // ==========================================
 // ESTADO
@@ -549,26 +509,14 @@ function updateTurn() {
 // ==========================================
 // PONTUAÇÃO
 // ==========================================
+// ==========================================
+// PONTUAÇÃO
+// ==========================================
 
 function calculatePoints() {
 
-    const basePoints = {
-
-        facil: 100,
-
-        medio: 150,
-
-        dificil: 200,
-
-        pro: 250,
-
-        expert: 300
-
-    };
-
-
-    let points =
-        basePoints[currentLevel];
+    // A pontuação base agora vem do JSON
+    let points = levels[currentLevel].basePoints;
 
 
     // Bônus por velocidade
@@ -592,13 +540,12 @@ function calculatePoints() {
     ) {
 
         points -= 20;
+
     }
 
 
     return Math.max(points, 10);
 }
-
-
 // ==========================================
 // CRONÔMETRO
 // ==========================================
@@ -863,26 +810,83 @@ function fitBoard() {
 new ResizeObserver(fitBoard).observe(gameBoard);
 
 
-// ==========================================
+
 // INICIALIZAÇÃO
-// ==========================================
 
-if (!levels[currentLevel]) {
 
-    // Sem nível válido: volta para a tela inicial
-    window.location.replace("index.html");
+async function initializeGame() {
 
-} else if (gameMode !== "solo" && gameMode !== "duo") {
+    // Primeiro carrega os dados do JSON
+    await loadGameData();
 
-    // Sem modo válido: volta para a escolha de jogadores
-    window.location.replace("modo.html?nivel=" + currentLevel);
 
-} else {
+    // Verifica se os dados foram carregados
+
+    if (
+        Object.keys(levels).length === 0 ||
+        relatedPairs.length === 0
+    ) {
+
+        console.error(
+            "Os dados do jogo não foram carregados."
+        );
+
+        return;
+    }
+
+
+    // Verifica se o nível é válido
+
+    if (!levels[currentLevel]) {
+
+        window.location.replace("index.html");
+
+        return;
+    }
+
+
+    // Verifica o modo de jogo
+
+    if (
+        gameMode !== "solo" &&
+        gameMode !== "duo"
+    ) {
+
+        window.location.replace(
+            "modo.html?nivel=" + currentLevel
+        );
+
+        return;
+    }
+
+
+    // Mostra informações do jogo
 
     document.getElementById("gameInfo").textContent =
-        `${levels[currentLevel].name} · ${gameMode === "duo" ? "2 jogadores" : "1 jogador"}`;
+        `${levels[currentLevel].name} · ${
+            gameMode === "duo"
+                ? "2 jogadores"
+                : "1 jogador"
+        }`;
 
-    playersScore.classList.toggle("hidden", gameMode !== "duo");
+
+    // Mostra placar de dois jogadores somente
+    // quando o modo for duo
+
+    playersScore.classList.toggle(
+        "hidden",
+        gameMode !== "duo"
+    );
+
+
+    // Inicia o jogo
 
     startGame(currentLevel);
 }
+
+
+// ==========================================
+// INICIAR APLICAÇÃO
+// ==========================================
+
+initializeGame();
